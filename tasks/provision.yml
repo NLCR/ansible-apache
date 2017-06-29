@@ -1,0 +1,6 @@
+- name: 'Distro non-specific provision'
+  package:
+    name: httpd
+- name: 'Distro Mod ssl'
+  package:
+    name: openssl
