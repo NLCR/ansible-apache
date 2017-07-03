@@ -6,8 +6,11 @@ apache_webroot: "/var/www/webarchiv.cz/public_html"
 #www-data
 apache_service_host: "www.webarchiv.cz"
 apache_service_admin_email: "webarchiv@nkp.cz"
-apache_service_name: "webarchiv"
+apache.service_name: []
 apache_service_root_directory: "/var/www/"
+apache_https_domain: []
+apache_http_conf: []
+apache_https_conf: []
 
 ssl_cert_country: "CZ"
 ssl_cert_locality: "Klementinum"
@@ -21,3 +24,11 @@ ssl_certs_fields: "/C={{ssl_cert_country}}/ST={{ssl_cert_state}}/L={{ssl_cert_lo
 
 
 ssl_csr_path: "/etc/ssl/{{ssl_cert_common_name}}"
+
+apache:
+  https_domain:
+  https_conf:
+
+apache:
+  https_domain:
+  https_conf:

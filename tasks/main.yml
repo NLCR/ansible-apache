@@ -6,46 +6,15 @@
 
 #ToDO python packages
 
-- name: 'Distro specific provision.'
-  include: provision-{{ ansible_os_family }}.yml
-
 #- name: Generate RSA (dhparams) file
 #  file: path=/etc/ssl/certs owner=root group=root state=link state=directory mode=777
 
-- name: Generate II
-  shell: openssl genrsa -out /etc/ssl/certs/private.key 2048
+- name: 'Distro specific provision.'
+  include: provision-{{ ansible_os_family }}.yml
+  when:
+    - apache.https_domain is defined
+    - apache.https_conf is defined
 
-- name: 'Add Apache htttp configuration: 80'
-  copy: src=wa2public.conf dest=/etc/{{ apache_service_name }}/vhosts.d/{{ apache_https_domain }}.http.conf mode=0644
-  when: apache_https_domain is defined
-- name: 'Add Apache https configuration: 443'
-  copy: src=modreslony.conf dest=/etc/{{ apache_service_name }}/vhosts.d/{{ apache_https_domain }}.https.conf mode=0644
-  when: apache_https_domain is defined
-
-- name: Conditional Installing certbot
-  git:
-    dest: '/opt/certbot'
-    clone: yes
-    repo: 'https://github.com/certbot/certbot'
-    force: yes
-  when: apache_https_domain is defined
-
-- name: Conditional issuing of certificate
-  shell: ./certbot-auto certonly --webroot --email {{ apache_service_admin_email }} --agree-tos --webroot-path={{ apache_webroot }} -d {{ apache_service_host }} > ansible-certification.log;
-  args:
-    chdir: /opt/certbot
-    creates: ansible-certification.log
-  when: apache_https_domain is defined
-
-- name: Creating CSR
-  command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key /etc/ssl/certs/private.key -out /etc/ssl/{{ apache_https_domain }}.csr
-  #/etc/{{ apache_service_name }}/ssl/certs/{{ apache_https_domain }}.csr
-
-- letsencrypt:
-    account_key: /etc/ssl/certs/private.key
-    account_email: '{{ apache_service_admin_email }}'
-    csr: /etc/ssl/{{ apache_https_domain }}.csr
-#/etc/pki/cert/csr/{{ apache_https_domain }}.csr
-    dest: /etc/pki/trust/anchors/{{ apache_https_domain }}.crt
-  register: webarchiv_cz_challenge
-  when: apache_https_domain is defined
+- name: 'Certbot provision'
+  include: certbot.yml
+  when: apache.https_domain is defined
