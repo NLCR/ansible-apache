@@ -1,17 +1,17 @@
 - name: 'Add Apache htttp configuration: 80'
   copy:
-    src: "{{ apache.http.conf }}"
-    dest: "/etc/httpd/vhosts.d/{{ apache.http.domain }}.http.conf"
+    src: "{{ http.conf }}"
+    dest: "/etc/httpd/vhosts.d/{{ http.domain }}.http.conf"
     mode: 0644
   when:
-    - apache.http.domain is defined
-    - apache.http.conf is defined
+    - http.domain is defined
+    - http.conf is defined
 
 - name: 'Add Apache https configuration: 443'
   copy:
-    src: "{{ apache.https.conf }}"
-    dest: "/etc/httpd/vhosts.d/{{ apache.https.domain }}.https.conf"
+    src: "{{ https.conf }}"
+    dest: "/etc/httpd/vhosts.d/{{ https.domain }}.https.conf"
     mode: 0644
   when:
-    - apache.https.domain is defined
-    - apache.https.conf is defined
+    - https.domain is defined
+    - https.conf is defined

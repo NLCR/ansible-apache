@@ -15,13 +15,13 @@
     creates: ansible-certification.log
 
 - name: Creating CSR
-  command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key /etc/ssl/certs/private.key -out /etc/ssl/{{ apache.https_domain }}.csr
-  #/etc/{{ apache_service_name }}/ssl/certs/{{ apache.https_domain }}.csr
+  command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key /etc/ssl/certs/private.key -out /etc/ssl/{{ https.domain }}.csr
+  #/etc/{{ apache_service_name }}/ssl/certs/{{ https.domain }}.csr
 
 - letsencrypt:
     account_key: /etc/ssl/certs/private.key
     account_email: '{{ apache_service_admin_email }}'
-    csr: /etc/ssl/{{ apache.https_domain }}.csr
-#/etc/pki/cert/csr/{{ apache.https_domain }}.csr
-    dest: /etc/pki/trust/anchors/{{ apache.https_domain }}.crt
+    csr: /etc/ssl/{{ https.domain }}.csr
+#/etc/pki/cert/csr/{{ https.domain }}.csr
+    dest: /etc/pki/trust/anchors/{{ https.domain }}.crt
   register: webarchiv_cz_challenge

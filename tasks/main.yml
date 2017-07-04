@@ -14,4 +14,4 @@
 
 - name: 'Certbot provision'
   include: certbot.yml
-  when: apache.https_domain is defined
+  when: https.domain is defined
