@@ -5,7 +5,6 @@
 
 - name: Certifciate request is ready
   command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key /etc/pki/tls/private/private-{{ https.domain }}.key -out /etc/ssl/{{ https.domain }}.csr
-  #/etc/{{ apache_service_name }}/ssl/certs/{{ https.domain }}.csr
   args:
     creates: /etc/ssl/{{ https.domain }}.csr
 

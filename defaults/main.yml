@@ -1,6 +1,5 @@
 ---
 # defaults file for NLCR.apache
-apache_service_name: "webarchiv.cz"
 #specific variables for certification of certification.yml
 apache_webroot: "/var/www/webarchiv.cz/public_html"
 #www-data

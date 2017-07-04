@@ -13,6 +13,5 @@
   include: certbot-{{ ansible_os_family }}.yml
   when: https.domain is defined
 
-
 - name: 'Distro specific domain configuration'
   include: configuration-{{ ansible_os_family }}.yml
