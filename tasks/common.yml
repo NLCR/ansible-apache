@@ -1,0 +1,14 @@
+- name: 'Distro non-specific provision'
+  package:
+    name: httpd,openssl
+
+- name: Private key is ready
+  command: openssl genrsa -out /etc/ssl/certs/private.key 2048
+  args:
+    creates: /etc/ssl/certs/private.key
+
+- name: Creating CSR
+  command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key /etc/ssl/certs/private.key -out /etc/ssl/{{ https.domain }}.csr 
+  #/etc/{{ apache_service_name }}/ssl/certs/{{ https.domain }}.csr
+  args:
+    creates: /etc/ssl/{{ https.domain }}.csr

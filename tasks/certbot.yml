@@ -1,27 +1,12 @@
-- name: Generate II
-  shell: openssl genrsa -out /etc/ssl/certs/private.key 2048
+  #- name: Certbot repository is cloned
+  #  git:
+  #    dest: /opt/certbot
+  #    clone: yes
+  #    repo: https://github.com/certbot/certbot
+  #    force: yes
 
-- name: Conditional Installing certbot
-  git:
-    dest: '/opt/certbot'
-    clone: yes
-    repo: 'https://github.com/certbot/certbot'
-    force: yes
-
-- name: Conditional issuing of certificate
-  shell: ./certbot-auto certonly --webroot --email {{ apache_service_admin_email }} --agree-tos --webroot-path={{ apache_webroot }} -d {{ apache_service_host }} > ansible-certification.log;
-  args:
-    chdir: /opt/certbot
-    creates: ansible-certification.log
-
-- name: Creating CSR
-  command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key /etc/ssl/certs/private.key -out /etc/ssl/{{ https.domain }}.csr
-  #/etc/{{ apache_service_name }}/ssl/certs/{{ https.domain }}.csr
-
-- letsencrypt:
-    account_key: /etc/ssl/certs/private.key
-    account_email: '{{ apache_service_admin_email }}'
-    csr: /etc/ssl/{{ https.domain }}.csr
-#/etc/pki/cert/csr/{{ https.domain }}.csr
-    dest: /etc/pki/trust/anchors/{{ https.domain }}.crt
-  register: webarchiv_cz_challenge
+    #- name: Conditional issuing of certificate
+    #  shell: ./certbot-auto certonly --webroot --email {{ apache_service_admin_email }} --agree-tos --webroot-path={{ apache_webroot }} -d {{ apache_service_host }} > ansible-certification.log;
+    #  args:
+    #    chdir: /opt/certbot
+    #    creates: ansible-certification.log

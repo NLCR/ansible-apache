@@ -1,0 +1,18 @@
+- name: Private key is ready
+  command: openssl genrsa -out /etc/pki/tls/private/private-{{ https.domain }}.key 2048
+  args:
+    creates: /etc/pki/tls/private/private-{{ https.domain }}.key
+
+- name: Certifciate request is ready
+  command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key /etc/pki/tls/private/private-{{ https.domain }}.key -out /etc/ssl/{{ https.domain }}.csr
+  #/etc/{{ apache_service_name }}/ssl/certs/{{ https.domain }}.csr
+  args:
+    creates: /etc/ssl/{{ https.domain }}.csr
+
+- name: "Let's encrypt {{ https.domain }}"
+  letsencrypt:
+    account_key: /etc/pki/tls/private/private-{{ https.domain }}.key
+    account_email: '{{ apache_service_admin_email }}'
+    csr: /etc/ssl/{{ https.domain }}.csr #/etc/pki/cert/csr/{{ https.domain }}.csr
+    dest: /etc/pki/trust/anchors/{{ https.domain }}.crt
+  register: webarchiv_cz_challenge

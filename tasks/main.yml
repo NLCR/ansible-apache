@@ -1,17 +1,18 @@
 ---
 # tasks file for NLCR.apache
 
-- name: 'Distro non-specific provision'
-  include: provision.yml
+- name: 'Distro non-specific common tasks'
+  include: common.yml
 
 #ToDO python packages
 
 #- name: Generate RSA (dhparams) file
 #  file: path=/etc/ssl/certs owner=root group=root state=link state=directory mode=777
 
+- name: 'SSL Certification'
+  include: certbot-{{ ansible_os_family }}.yml
+  when: https.domain is defined
+
+
 - name: 'Distro specific domain configuration'
   include: configuration-{{ ansible_os_family }}.yml
-
-- name: 'Certbot provision'
-  include: certbot.yml
-  when: https.domain is defined
