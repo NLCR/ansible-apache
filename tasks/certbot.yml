@@ -1,12 +1,17 @@
-  #- name: Certbot repository is cloned
-  #  git:
-  #    dest: /opt/certbot
-  #    clone: yes
-  #    repo: https://github.com/certbot/certbot
-  #    force: yes
+- name: 'Private key is ready here: {{ apache.key }}/{{ https.domain }}.key'
+  command: openssl genrsa -out {{ apache.key }}/{{ https.domain }}.key 2048
+  args:
+    creates: '{{ apache.key }}/{{ https.domain }}.key'
 
-    #- name: Conditional issuing of certificate
-    #  shell: ./certbot-auto certonly --webroot --email {{ apache_service_admin_email }} --agree-tos --webroot-path={{ apache_webroot }} -d {{ apache_service_host }} > ansible-certification.log;
-    #  args:
-    #    chdir: /opt/certbot
-    #    creates: ansible-certification.log
+- name: 'Certifciate request is ready here: {{ apache.csr }}/{{ https.domain }}.csr'
+  command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key {{ apache.key }}/{{ https.domain }}.key -out {{ apache.csr }}/{{ https.domain }}.csr
+  args:
+    creates: '{{ apache.csr }}/{{ https.domain }}.csr'
+
+- name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
+  letsencrypt:
+    account_key: '{{ apache.key }}/{{ https.domain }}.key'
+    account_email: '{{ apache_service_admin_email }}'
+    csr: '{{ apache.csr }}/{{ https.domain }}.csr'
+    dest: '{{ apache.crt }}/{{ https.domain }}.crt'
+  register: webarchiv_cz_challenge
