@@ -1,0 +1,7 @@
+---
+apache:
+  service: httpd
+  conf: /etc/httpd/conf.d
+  key: /etc/pki/tls/private
+  csr: /etc/pki/tls/private
+  crt: /etc/pki/tls/certs

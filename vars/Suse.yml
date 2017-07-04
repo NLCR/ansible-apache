@@ -1,0 +1,7 @@
+---
+apache:
+  service: apache2
+  conf: /etc/apache2/vhosts.d
+  key: /etc/apache2/ssl.key
+  csr: /etc/apache2/ssl.csr
+  crt: /etc/apache2/ssl.crt
