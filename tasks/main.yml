@@ -4,11 +4,6 @@
 - name: 'Distro non-specific common tasks'
   include: common.yml
 
-#ToDO python packages
-
-#- name: Generate RSA (dhparams) file
-#  file: path=/etc/ssl/certs owner=root group=root state=link state=directory mode=777
-
 - name: 'SSL Certification'
   include: certbot-{{ ansible_os_family }}.yml
   when: https.domain is defined
