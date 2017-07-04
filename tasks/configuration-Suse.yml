@@ -1,0 +1,17 @@
+- name: Apache HTTP configuration in place
+  copy:
+    src: "{{ apache.http.conf }}"
+    dest: "/etc/apache2/vhosts.d/{{ apache.http.domain }}.http.conf"
+    mode: 0644
+  when:
+    - apache.http.domain is defined
+    - apache.http.conf is defined
+
+- name: Apache HTTPS configuration at place
+  copy:
+    src: "{{ apache.https_conf }}"
+    dest: "/etc/apache2/vhosts.d/{{ apache.https.domain }}.https.conf"
+    mode: 0644
+  when:
+    - apache.https.domain is defined
+    - apache.https.conf is defined

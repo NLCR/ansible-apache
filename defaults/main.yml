@@ -26,9 +26,9 @@ ssl_certs_fields: "/C={{ssl_cert_country}}/ST={{ssl_cert_state}}/L={{ssl_cert_lo
 ssl_csr_path: "/etc/ssl/{{ssl_cert_common_name}}"
 
 apache:
-  https_domain:
-  https_conf:
-
-apache:
-  https_domain:
-  https_conf:
+  https:
+  #  domain:
+  #  conf:
+  http:
+  #  domain:
+  #  conf:

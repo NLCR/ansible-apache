@@ -9,11 +9,8 @@
 #- name: Generate RSA (dhparams) file
 #  file: path=/etc/ssl/certs owner=root group=root state=link state=directory mode=777
 
-- name: 'Distro specific provision.'
-  include: provision-{{ ansible_os_family }}.yml
-  when:
-    - apache.https_domain is defined
-    - apache.https_conf is defined
+- name: 'Distro specific domain configuration'
+  include: configuration-{{ ansible_os_family }}.yml
 
 - name: 'Certbot provision'
   include: certbot.yml
