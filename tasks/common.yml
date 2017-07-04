@@ -1,3 +1,0 @@
-- name: 'Distro non-specific provision'
-  package:
-    name: httpd,openssl

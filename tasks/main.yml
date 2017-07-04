@@ -12,5 +12,20 @@
   include: certbot.yml
   when: https.domain is defined
 
-- name: Apache Configuration
-  include: configure-apache.yml
+- name: 'Apache HTTP configuration is deployed.'
+  copy:
+    src: "{{ http.conf }}"
+    dest: "{{ apache.conf }}/{{ http.domain }}.http.conf"
+    mode: 0644
+  when:
+    - http.domain is defined
+    - http.conf is defined
+
+- name: 'Apache HTTPS configuration is deployed.'
+  template:
+    src: "{{ https.conf }}"
+    dest: "{{ apache.conf }}/{{ https.domain }}.https.conf"
+    mode: 0644
+  when:
+    - https.domain is defined
+    - https.conf is defined
