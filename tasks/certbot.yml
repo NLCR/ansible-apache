@@ -3,6 +3,11 @@
   args:
     creates: '{{ apache.key }}/{{ https.domain }}.key'
 
+- name: "Private key for Let's Encrypt Account"
+  command: openssl genrsa -out {{ apache.key }}/account.key 2048
+  args:
+    creates: '{{ apache.key }}/account.key'
+
 - name: 'Certifciate request is ready here: {{ apache.csr }}/{{ https.domain }}.csr'
   command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key {{ apache.key }}/{{ https.domain }}.key -out {{ apache.csr }}/{{ https.domain }}.csr
   args:
@@ -10,8 +15,29 @@
 
 - name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
   letsencrypt:
-    account_key: '{{ apache.key }}/{{ https.domain }}.key'
+    account_key: '{{ apache.key }}/account.key'
     account_email: '{{ apache_service_admin_email }}'
     csr: '{{ apache.csr }}/{{ https.domain }}.csr'
     dest: '{{ apache.crt }}/{{ https.domain }}.crt'
-  register: webarchiv_cz_challenge
+  register: http_challenge
+
+- debug:
+    var: http_challenge
+
+- name: Creating challenge dir
+  file:
+    path:  /srv/www/htdocs/webarchiv.cz/.well-known/acme-challenge/
+    state: directory
+
+- name: Creating challenge file
+  copy:
+    dest: /srv/www/htdocs/webarchiv.cz/{{ http_challenge['challenge_data']['webarchiv.cz']['http-01']['resource'] }}
+    content: "{{ http_challenge['challenge_data']['webarchiv.cz']['http-01']['resource_value'] }}"
+  when: http_challenge | changed
+
+- name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
+  letsencrypt:
+    account_key: '{{ apache.key }}/account.key'
+    csr: '{{ apache.csr }}/{{ https.domain }}.csr'
+    dest: '{{ apache.crt }}/{{ https.domain }}.crt'
+    data: "{{ http_challenge }}"
