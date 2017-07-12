@@ -39,7 +39,7 @@
 - name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
   letsencrypt:
     account_key: '{{ apache.key }}/account.key'
-    acme_directory: '{{ acme_directory | default("https://acme-staging.api.letsencrypt.org/directory") }}'
+#    acme_directory: '{{ acme_directory | default("https://acme-staging.api.letsencrypt.org/directory") }}'
     csr: '{{ apache.csr }}/{{ https.domain }}.csr'
     dest: '{{ apache.crt }}/{{ https.domain }}.crt'
     data: "{{ http_challenge }}"
