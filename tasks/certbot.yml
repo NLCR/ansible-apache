@@ -8,22 +8,35 @@
   args:
     creates: '{{ apache.key }}/account.key'
 
+- name: "Remove CSR and CRT"
+  file:
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - '{{ apache.csr }}/{{ https.domain }}.csr'
+    - '{{ apache.crt }}/{{ https.domain }}.crt'
+#  when: '{{ remove_cert | default("False") | bool }}'
+  tags: remove_cert
+
 - name: 'Certifciate request is ready here: {{ apache.csr }}/{{ https.domain }}.csr'
   command: openssl req -new -sha256 -subj "{{ ssl_certs_fields }}" -key {{ apache.key }}/{{ https.domain }}.key -out {{ apache.csr }}/{{ https.domain }}.csr
   args:
     creates: '{{ apache.csr }}/{{ https.domain }}.csr'
 
-- name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
+- name: "Requesting Let's encrypt challange for the domain."
   letsencrypt:
     account_key: '{{ apache.key }}/account.key'
     account_email: '{{ apache_service_admin_email }}'
-#    acme_directory: '{{ acme_directory | default("https://acme-staging.api.letsencrypt.org/directory") }}'
+    acme_directory: "{{ acme_directory | default('https://acme-staging.api.letsencrypt.org/directory') }}"
     csr: '{{ apache.csr }}/{{ https.domain }}.csr'
     dest: '{{ apache.crt }}/{{ https.domain }}.crt'
   register: http_challenge
 
 - debug:
     var: http_challenge
+
+- debug:
+    var: acme_directory
 
 - name: Creating challenge dir
   file:
@@ -39,7 +52,7 @@
 - name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
   letsencrypt:
     account_key: '{{ apache.key }}/account.key'
-#    acme_directory: '{{ acme_directory | default("https://acme-staging.api.letsencrypt.org/directory") }}'
+    acme_directory: '{{ acme_directory | default("https://acme-staging.api.letsencrypt.org/directory") }}'
     csr: '{{ apache.csr }}/{{ https.domain }}.csr'
     dest: '{{ apache.crt }}/{{ https.domain }}.crt'
     data: "{{ http_challenge }}"
