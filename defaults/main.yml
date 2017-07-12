@@ -3,10 +3,10 @@
 #specific variables for certification of certification.yml
 apache_webroot: "/var/www/webarchiv.cz/public_html"
 #www-data
-apache_service_host: "www.webarchiv.cz"
-apache_service_admin_email: "webarchiv@nkp.cz"
+apache_service_host: www.webarchiv.cz
+apache_service_admin_email: webarchiv@nkp.cz
 apache.service_name: []
-apache_service_root_directory: "/var/www/"
+apache_service_root_directory: /var/www/
 apache_https_domain: []
 apache_http_conf: []
 apache_https_conf: []
