@@ -27,7 +27,7 @@
 - name: Creating CA
   template:
     src: "{{ https.intermed }}"
-    dest: "{{ apache.interm }}/{{ https.domain }}.https.conf"
+    dest: "{{ apache.interm }}/{{ https.intermed }}"
     mode: 0644
   when: https.intermed is defined
 
