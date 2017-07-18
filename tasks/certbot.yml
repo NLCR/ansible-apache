@@ -53,8 +53,8 @@
 
 - name: Creating challenge file
   copy:
-    dest: /srv/www/htdocs/webarchiv.cz/{{ http_challenge['challenge_data']['webarchiv.cz']['http-01']['resource'] }}
-    content: "{{ http_challenge['challenge_data']['webarchiv.cz']['http-01']['resource_value'] }}"
+    dest: /srv/www/htdocs/webarchiv.cz/{{ http_challenge['challenge_data']['{{ https.domain }}']['http-01']['resource'] }}
+    content: "{{ http_challenge['challenge_data']['{{ https.domain }}']['http-01']['resource_value'] }}"
   when: http_challenge | changed
 
 - name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
