@@ -23,6 +23,14 @@
   args:
     creates: '{{ apache.csr }}/{{ https.domain }}.csr'
 
+#pak to slurpnut z https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt
+- name: Creating CA
+  template:
+    src: "{{ https.intermed }}"
+    dest: "{{ apache.interm }}/{{ https.domain }}.https.conf"
+    mode: 0644
+  when: https.intermed is defined
+
 - name: "Requesting Let's encrypt challange for the domain."
   letsencrypt:
     account_key: '{{ apache.key }}/account.key'

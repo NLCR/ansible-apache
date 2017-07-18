@@ -5,3 +5,4 @@ apache:
   key: /etc/apache2/ssl.key
   csr: /etc/apache2/ssl.csr
   crt: /etc/apache2/ssl.crt
+  interm: /etc/apache2/ssl.crt
