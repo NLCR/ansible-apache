@@ -8,18 +8,24 @@
 - name: OS specific variables are ready
   include_vars: '{{ ansible_os_family }}.yml'
 
-- name: 'SSL Certification'
-  include: certbot.yml
-  when: https.domain is defined
-
 - name: 'Apache HTTP configuration is deployed.'
-  copy:
+  template:
     src: "{{ http.conf }}"
     dest: "{{ apache.conf }}/{{ http.domain }}.http.conf"
     mode: 0644
   when:
     - http.domain is defined
     - http.conf is defined
+
+- name: 'SSL Certification'
+  include: certbot.yml
+  when: https.domain is defined
+
+- debug:
+    var: "{{ http.conf }}"
+
+- debug:
+    var:  "{{ https.domain }}"
 
 - name: 'Apache HTTPS configuration is deployed.'
   template:

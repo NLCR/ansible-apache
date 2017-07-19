@@ -68,3 +68,4 @@
     csr: '{{ apache.csr }}/{{ https.domain }}.csr'
     dest: '{{ apache.crt }}/{{ https.domain }}.crt'
     data: "{{ http_challenge }}"
+  ignore_errors: yes
