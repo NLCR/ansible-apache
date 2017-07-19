@@ -40,8 +40,8 @@
     dest: '{{ apache.crt }}/{{ https.domain }}.crt'
   register: http_challenge
 
-- debug:
-    var: http_challenge
+#- debug:
+#    var: http_challenge.authorizations[0].identifier.value
 
 - debug:
     var: acme_directory
@@ -51,10 +51,14 @@
     path:  /srv/www/htdocs/webarchiv.cz/.well-known/acme-challenge/
     state: directory
 
+- set_fact:
+    chell_dest: "http_challenge['challenge_data']['{{ http_challenge.authorizations[0].identifier.value }}']['https.domain']['http-01']['resource']"
+    chell_content:  "http_challenge['challenge_data'][''{{ http_challenge.authorizations[0].identifier.value }}'']['http-01']['resource_value']"
+
 - name: Creating challenge file
   copy:
-    dest: /srv/www/htdocs/webarchiv.cz/{{ http_challenge['challenge_data']['{{ https.domain }}']['http-01']['resource'] }}
-    content: "{{ http_challenge['challenge_data']['{{ https.domain }}']['http-01']['resource_value'] }}"
+    dest: /srv/www/htdocs/webarchiv.cz/{{ chell_dest }}
+    content: "chell_content"
   when: http_challenge | changed
 
 - name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
