@@ -11,23 +11,24 @@ apache_https_domain: []
 apache_http_conf: []
 apache_https_conf: []
 
-ssl_cert_country: "CZ"
-ssl_cert_locality: "Klementinum"
-ssl_cert_organization: "NLCR"
-ssl_cert_state: "Prague"
-ssl_cert_days: "365"
-ssl_cert_email: "webarchiv@nkp.cz"
-ssl_certs_common_name: "webarchiv.cz"
-
-ssl_certs_fields: "/C={{ssl_cert_country}}/ST={{ssl_cert_state}}/L={{ssl_cert_locality}}/O={{ssl_cert_organization}}/CN={{ssl_certs_common_name}}"
-
-
-ssl_csr_path: "/etc/ssl/{{ssl_cert_common_name}}"
-
-
 https: []
 #  domain:
 #  conf:
 http: []
 #  domain:
 #  conf:
+
+ssl_cert_country: "CZ"
+ssl_cert_locality: "Klementinum"
+ssl_cert_organization: "NLCR"
+ssl_cert_state: "Prague"
+ssl_cert_days: "365"
+ssl_cert_email: "webarchiv@nkp.cz"
+#oprava na multidomaine
+ssl_certs_common_name: {{ http.domaine }}
+
+
+ssl_certs_fields: "/C={{ssl_cert_country}}/ST={{ssl_cert_state}}/L={{ssl_cert_locality}}/O={{ssl_cert_organization}}/CN={{ssl_certs_common_name}}"
+
+
+#zbytocne ssl_csr_path: "/etc/ssl/{{ssl_cert_common_name}}"
