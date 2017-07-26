@@ -11,7 +11,8 @@
 - name: 'Apache HTTP configuration is deployed.'
   template:
     src: "{{ http.conf }}"
-    dest: "{{ apache.conf }}/{{ http.domain }}.http.conf"
+    dest: "{{ apache.conf }}/aggregatus.http.conf"
+#    {{ http.domain }}.http.conf"
     mode: 0644
   when:
     - http.domain is defined
@@ -30,7 +31,8 @@
 - name: 'Apache HTTPS configuration is deployed.'
   template:
     src: "{{ https.conf }}"
-    dest: "{{ apache.conf }}/{{ https.domain }}.https.conf"
+    dest: "{{ apache.conf }}/aggregatus.https.conf"
+# {{ https.domain }}.https.conf"
     mode: 0644
   when:
     - https.domain is defined
