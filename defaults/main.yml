@@ -25,7 +25,7 @@ ssl_cert_state: "Prague"
 ssl_cert_days: "365"
 ssl_cert_email: "webarchiv@nkp.cz"
 #oprava na multidomaine
-ssl_certs_common_name: {{ http.domaine }}
+ssl_certs_common_name: '{{ http.domaine }}'
 
 
 ssl_certs_fields: "/C={{ssl_cert_country}}/ST={{ssl_cert_state}}/L={{ssl_cert_locality}}/O={{ssl_cert_organization}}/CN={{ssl_certs_common_name}}"
