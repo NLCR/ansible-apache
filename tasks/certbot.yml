@@ -44,6 +44,9 @@
 #    var: http_challenge.authorizations[0].identifier.value
 
 - debug:
+    var: ssl_certs_fields
+
+- debug:
     var: acme_directory
 
 - name: Creating challenge dir
