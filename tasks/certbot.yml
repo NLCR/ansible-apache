@@ -61,7 +61,7 @@
 - name: Creating challenge file
   copy:
     dest: /srv/www/htdocs/webarchiv.cz/{{ chell_dest }}
-    content: {{ chell_content }}
+    content: '{{ chell_content }}'
   when: http_challenge | changed
 
 - name: "Let's encrypt cert for domain: {{ https.domain }} is here: {{ apache.crt }}/{{ https.domain }}"
